@@ -1,75 +1,66 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const benefits = [
+const steps = [
   {
-    eyebrow: "Controle",
-    title: "O site é seu de verdade",
-    desc: "Domínio, conteúdo e estrutura ficam no seu nome. Sem mensalidades abusivas ou dependência de terceiros para tudo.",
+    title: "Orçamento",
+    desc: "Análise técnica da sua necessidade. Definimos o que precisa ser construído para resolver o problema de forma direta, sem custos desnecessários.",
   },
   {
-    eyebrow: "Crescimento",
-    title: "Pronto para evoluir",
-    desc: "O projeto permite receber novas seções, formulários e integrações conforme a demanda do seu negócio crescer.",
+    title: "Negociação",
+    desc: "Alinhamento de prazos, entregáveis e valores. Ajustamos os detalhes para que o projeto caiba na sua realidade e expectativa de investimento.",
   },
   {
-    eyebrow: "Busca local",
-    title: "Encontrado por clientes",
-    desc: "Página organizada para deixar claro o que você oferece e onde atende, facilitando o contato de quem procura na região.",
+    title: "Desenvolvimento",
+    desc: "A fase de construção ativa. Onde a ideia ganha forma através de código limpo, seguindo as prioridades definidas no planejamento inicial.",
   },
   {
-    eyebrow: "Design",
-    title: "Cara de negócio sério",
-    desc: "Interface pensada para passar confiança e profissionalismo, transformando visitantes em contatos reais.",
+    title: "Versão Inicial (MVP)",
+    desc: "Entrega de uma versão funcional com as ferramentas essenciais. Focamos no que traz resultado imediato para validar a solução na prática.",
+  },
+  {
+    title: "Refinamento",
+    desc: "Ajustes finais baseados no uso real da ferramenta. Polimos a interface e os fluxos até que o software esteja pronto para a operação total.",
+  },
+  {
+    title: "Acompanhamento",
+    desc: "Suporte técnico pós-entrega para garantir que tudo funcione. Inclui uma reunião mensal de feedback para avaliar possíveis evoluções.",
   },
 ]
 
 export function Features() {
   return (
-    <section className="border-foreground/10 w-full max-w-7xl border-t px-8 py-24 md:px-12">
-      <div className="mb-16 w-full">
-        <span className="text-muted-foreground text-xs font-bold tracking-[0.2em] uppercase">
-          Você recebe...
-        </span>
-
-        {/* Ajustado: removido max-w-2xl para evitar quebra precoce e suavizado o tracking */}
-        <h2 className="mt-4 text-4xl leading-[0.95] font-bold tracking-tight md:text-5xl lg:text-6xl">
-          Um site funcional, <br className="hidden md:block" /> pronto para
-          utilização.
+    <section className="border-foreground/10 w-full border-t py-20">
+      <div className="mb-16">
+        <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+          Etapas de Desenvolvimento.
         </h2>
-
-        <p className="text-muted-foreground mt-6 max-w-4xl text-lg leading-relaxed">
-          Sem complicações técnicas. A entrega é uma presença online clara,
-          profissional e totalmente sob o seu controle.
+        <p className="text-muted-foreground mt-6 max-w-3xl text-lg leading-relaxed md:text-xl">
+          Um processo estruturado para transformar sua demanda em uma ferramenta
+          real.
+          <br className="hidden md:block" />
+          Foco em execução previsível e transparência em cada etapa.
         </p>
       </div>
 
-      {/* Ajustado: items-stretch garante que todos os cards tenham a mesma altura vertical */}
-      <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {benefits.map((item, i) => (
+      {/* Grid de 3 colunas para fechar as 6 caixas perfeitamente */}
+      <div className="bg-foreground/10 border-foreground/10 grid grid-cols-1 gap-px border md:grid-cols-2 lg:grid-cols-3">
+        {steps.map((item, i) => (
           <Card
             key={i}
-            className="group border-foreground/10 hover:border-foreground flex h-full flex-col rounded-none border-2 bg-transparent p-8 shadow-none transition-colors"
+            className="bg-background hover:bg-muted/30 flex h-full flex-col rounded-none border-none p-8 shadow-none transition-colors"
           >
-            <CardHeader className="space-y-6 p-0">
-              <span className="font-mono text-sm font-bold opacity-20">
-                // 0{i + 1}
+            <CardHeader className="p-0">
+              <span className="text-muted-foreground/40 text-xs font-bold tracking-[0.2em] uppercase">
+                Etapa 0{i + 1}
               </span>
-
-              <div className="min-h-20">
-                {" "}
-                {/* Altura mínima para alinhar os títulos */}
-                <span className="text-muted-foreground text-[10px] font-bold tracking-[0.15em] uppercase">
-                  {item.eyebrow}
-                </span>
-                <CardTitle className="mt-2 text-xl leading-tight font-bold tracking-tight">
-                  {item.title}
-                </CardTitle>
-              </div>
+              <CardTitle className="mt-3 text-xl font-bold tracking-tight md:text-2xl">
+                {item.title}
+              </CardTitle>
             </CardHeader>
 
-            {/* O pt-8 e flex-1 garantem que o texto comece no mesmo nível e preencha o espaço */}
-            <CardContent className="flex-1 p-0">
-              <p className="text-muted-foreground text-sm leading-relaxed">
+            <CardContent className="mt-6 p-0">
+              {/* Aumentado o texto para text-base e leading-relaxed para melhor leitura */}
+              <p className="text-muted-foreground text-base leading-relaxed md:text-lg">
                 {item.desc}
               </p>
             </CardContent>

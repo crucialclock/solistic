@@ -13,10 +13,6 @@ const MENU_ITEMS = [
   { label: "Orçamento", to: "/orcamento" },
 ]
 
-/**
- * Componente Reutilizável de Links
- * Renderiza a lista de navegação baseada no array MENU_ITEMS
- */
 const NavLinksList = ({ mobile = false }: { mobile?: boolean }) => {
   return (
     <>
