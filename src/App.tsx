@@ -77,7 +77,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ ...baseTransition, delay: 0.5 }}
-            className="relative -z-10 flex justify-center lg:absolute lg:top-73 lg:-right-40 lg:mt-0 lg:w-205 lg:-translate-y-1/2 xl:-right-24 xl:w-245 2xl:-right-2 2xl:w-250"
+            className="relative -z-10 flex justify-center lg:absolute lg:top-77 lg:-right-40 lg:mt-0 lg:w-205 lg:-translate-y-1/2 xl:-right-24 xl:w-245 2xl:-right-2 2xl:w-250"
           >
             <img
               src={webImg}
