@@ -19,6 +19,12 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
+
+  /* Transição suave */
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease;
+
   /* Suaviza as fontes para melhorar a leitura nessas cores */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -32,6 +38,11 @@ body::before {
 
   /* Usamos a variável de opacidade para garantir visibilidade em ambos os modos */
   opacity: var(--grid-opacity);
+
+  /* Transição suave do grid */
+  transition:
+    opacity 0.45s ease,
+    background-image 0.45s ease;
 
   /* Forçamos o gradiente a usar a variável de cor que o ThemeProvider inverte */
   background-image:
@@ -89,7 +100,7 @@ body::before {
     filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.3))
       drop-shadow(0 0 18px rgba(245, 158, 11, 0.12));
   }
-} 
+}
 
 .animate-sun-rise {
   animation:
@@ -99,4 +110,40 @@ body::before {
 
 .animate-sun-set {
   animation: sun-set 0.8s ease-in-out forwards;
+}
+
+/* Firefox (Padrão Moderno) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--foreground) transparent;
+}
+
+/* Chrome, Edge e Safari (WebKit) */
+::-webkit-scrollbar {
+  width: 5px; /* Deixa ele bem fininho */
+  height: 5px; /* Para scroll horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Fundo invisível para não poluir */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--foreground); /* Usa a cor do seu texto */
+  border-radius: 20px; /* Deixa as pontas arredondadas */
+  opacity: 0.3; /* Começa discreto */
+}
+
+/* Efeito de hover para quando o usuário passar o mouse no scroll */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #f97316; /* Um toque de cor (laranja do seu sol) ao interagir */
+}
+
+/* Opcional: Esconder o scrollbar em elementos específicos sem perder a função */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
