@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { motion, type Transition } from "framer-motion"
 import { Features } from "./components/creative/features"
-import webImg from "@/assets/web.png"
+import webImg from "@/assets/web.webp"
 import { Link } from "react-router-dom"
 
 export default function Home() {
