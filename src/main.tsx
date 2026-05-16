@@ -8,30 +8,53 @@ import { Orcamento } from "./pages/orcamento/page.tsx"
 import { Projetos } from "./pages/projetos/page.tsx"
 import { Servicos } from "./pages/servicos/page.tsx"
 import { RootLayout } from "./components/layout.tsx"
+import { AuthGuard } from "./components/auth-guard.tsx"
+import Login from "./pages/login/page.tsx"
+import Registro from "./pages/registro/page.tsx"
 import App from "./App.tsx"
+import { Dashboard } from "./pages/dashboard/page.tsx"
 
-// Configuração das rotas
+// Configuração das rotas completas
 const router = createBrowserRouter(
   [
     {
       path: "/",
-      element: <RootLayout />, // O Layout pai com a Navbar
+      element: <RootLayout />, // Layout pai uniforme
       children: [
         {
           path: "/",
           element: <App />,
         },
         {
+          path: "/login",
+          element: <Login />,
+        },
+        {
+          path: "/registro",
+          element: <Registro />,
+        },
+        {
           path: "/orcamento",
-          element: <Orcamento></Orcamento>,
+          element: <Orcamento />,
         },
         {
           path: "/servicos",
-          element: <Servicos></Servicos>,
+          element: <Servicos />,
         },
         {
           path: "/projetos",
-          element: <Projetos></Projetos>,
+          element: <Projetos />,
+        },
+
+        // Exemplo de escopo protegido usando a Http Guard no React
+        {
+          element: <AuthGuard />,
+          children: [
+            {
+              path: "/dashboard",
+              element: <Dashboard />, // Agora sim chama o componente real
+            },
+          ],
         },
       ],
     },

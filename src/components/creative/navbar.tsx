@@ -3,9 +3,9 @@ import { Menu } from "lucide-react"
 import { ModeToggle } from "./mode-toggle"
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import { Logo } from "./logo"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
-// Configuração centralizada dos links para facilitar manutenção
+// Links institucionais padrão
 const MENU_ITEMS = [
   { label: "Início", to: "/" },
   { label: "Projetos", to: "/projetos" },
@@ -13,7 +13,12 @@ const MENU_ITEMS = [
   { label: "Orçamento", to: "/orcamento" },
 ]
 
-const NavLinksList = ({ mobile = false }: { mobile?: boolean }) => {
+interface NavLinksListProps {
+  mobile?: boolean
+}
+
+// Lista apenas os links institucionais para não embolar com o fluxo de autenticação
+const NavLinksList = ({ mobile = false }: NavLinksListProps) => {
   return (
     <>
       {MENU_ITEMS.map((item) =>
@@ -44,15 +49,35 @@ const NavLinksList = ({ mobile = false }: { mobile?: boolean }) => {
 }
 
 export function Navbar() {
+  // Força a atualização a cada troca de rota para reler o localStorage
+  useLocation()
+
+  const isAuthenticated = !!localStorage.getItem("token")
+
   return (
     <header className="border-foreground/10 bg-background flex w-full justify-center">
       <nav className="flex h-16 w-full max-w-7xl items-center justify-between px-6 md:px-12">
         <Logo />
 
-        {/* DESKTOP NAV - Chama a lista de links */}
+        {/* DESKTOP NAV */}
         <div className="hidden items-center gap-8 md:flex">
           <ModeToggle />
-          <NavLinksList />
+
+          <div className="flex items-center gap-6">
+            <NavLinksList />
+          </div>
+
+          {/* Botão Dinâmico Isolado — Evita quebras no mapeamento anterior */}
+          <Button
+            variant="ghost"
+            asChild
+            className="group relative h-9 cursor-pointer rounded-none px-0 text-xs font-bold tracking-widest uppercase transition-all hover:bg-transparent"
+          >
+            <Link to={isAuthenticated ? "/dashboard" : "/login"}>
+              {isAuthenticated ? "Dashboard" : "Login"}
+              <span className="absolute -bottom-1 left-0 h-px w-full scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </Link>
+          </Button>
         </div>
 
         {/* MOBILE NAV */}
@@ -75,8 +100,15 @@ export function Navbar() {
             >
               <div className="mt-8 flex flex-col gap-8">
                 <nav className="flex flex-col gap-5">
-                  {/* Reaproveita a mesma lista, mas com estilo mobile */}
                   <NavLinksList mobile />
+
+                  {/* Link de autenticação no menu mobile */}
+                  <Link
+                    to={isAuthenticated ? "/dashboard" : "/login"}
+                    className="text-xs font-bold tracking-[0.2em] uppercase opacity-70 transition-opacity hover:opacity-100"
+                  >
+                    {isAuthenticated ? "Dashboard" : "Login"}
+                  </Link>
                 </nav>
 
                 <Button
