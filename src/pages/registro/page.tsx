@@ -101,7 +101,7 @@ export default function Registro() {
                 <Input
                   type="text"
                   {...register("name")}
-                  placeholder="Mateus da Silveira"
+                  placeholder="Pipipi Popopo..."
                   className="border-foreground/10 focus-visible:border-foreground h-14 rounded-none border-2 bg-transparent px-4 text-base focus-visible:ring-0"
                 />
                 {errors.name && (
