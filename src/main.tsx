@@ -15,54 +15,49 @@ import App from "./App.tsx"
 import { Dashboard } from "./pages/dashboard/page.tsx"
 
 // Configuração das rotas completas
-const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <RootLayout />, // Layout pai uniforme
-      children: [
-        {
-          path: "/",
-          element: <App />,
-        },
-        {
-          path: "/login",
-          element: <Login />,
-        },
-        {
-          path: "/registro",
-          element: <Registro />,
-        },
-        {
-          path: "/orcamento",
-          element: <Orcamento />,
-        },
-        {
-          path: "/servicos",
-          element: <Servicos />,
-        },
-        {
-          path: "/projetos",
-          element: <Projetos />,
-        },
-
-        // Exemplo de escopo protegido usando a Http Guard no React
-        {
-          element: <AuthGuard />,
-          children: [
-            {
-              path: "/dashboard",
-              element: <Dashboard />, // Agora sim chama o componente real
-            },
-          ],
-        },
-      ],
-    },
-  ],
+const router = createBrowserRouter([
   {
-    basename: "/solistic",
-  }
-)
+    path: "/",
+    element: <RootLayout />, // Layout pai uniforme
+    children: [
+      {
+        path: "/",
+        element: <App />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/registro",
+        element: <Registro />,
+      },
+      {
+        path: "/orcamento",
+        element: <Orcamento />,
+      },
+      {
+        path: "/servicos",
+        element: <Servicos />,
+      },
+      {
+        path: "/projetos",
+        element: <Projetos />,
+      },
+
+      // Exemplo de escopo protegido usando a Http Guard no React
+      {
+        element: <AuthGuard />,
+        children: [
+          {
+            path: "/dashboard",
+            element: <Dashboard />, // Agora sim chama o componente real
+          },
+        ],
+      },
+    ],
+  },
+])
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
