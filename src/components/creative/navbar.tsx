@@ -9,7 +9,6 @@ import { Link, useLocation } from "react-router-dom"
 const MENU_ITEMS = [
   { label: "Início", to: "/" },
   { label: "Projetos", to: "/projetos" },
-  { label: "Serviços", to: "/servicos" },
   { label: "Orçamento", to: "/orcamento" },
 ]
 

@@ -4,15 +4,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 import "./index.css"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
-import { Orcamento } from "./pages/orcamento/page.tsx"
 import { Projetos } from "./pages/projetos/page.tsx"
-import { Servicos } from "./pages/servicos/page.tsx"
 import { RootLayout } from "./components/layout.tsx"
 import { AuthGuard } from "./components/auth-guard.tsx"
 import Login from "./pages/login/page.tsx"
 import Registro from "./pages/registro/page.tsx"
 import App from "./App.tsx"
 import { Dashboard } from "./pages/dashboard/page.tsx"
+import { Orcamento } from "./pages/orcamento/page.tsx"
 
 // Configuração das rotas completas
 const router = createBrowserRouter([
@@ -35,10 +34,6 @@ const router = createBrowserRouter([
       {
         path: "/orcamento",
         element: <Orcamento />,
-      },
-      {
-        path: "/servicos",
-        element: <Servicos />,
       },
       {
         path: "/projetos",

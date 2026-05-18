@@ -11,7 +11,7 @@ const steps = [
   },
   {
     title: "Desenvolvimento",
-    desc: "A fase de construção ativa. Onde a ideia ganha forma através de código limpo, seguindo as prioridades definidas no planejamento inicial.",
+    desc: "A fase de construção activa. Onde a ideia ganha forma através de código limpo, seguindo as prioridades definidas no planejamento inicial.",
   },
   {
     title: "Versão Inicial (MVP)",
@@ -35,35 +35,38 @@ export function Features() {
           Etapas de Desenvolvimento.
         </h2>
         <p className="text-muted-foreground mt-6 max-w-3xl text-lg leading-relaxed md:text-xl">
-          Um processo estruturado para transformar sua demanda em uma ferramenta
+          Um processo estruturado para transformar sua demanda in uma ferramenta
           real.
           <br className="hidden md:block" />
           Foco em execução previsível e transparência em cada etapa.
         </p>
       </div>
 
-      {/* Grid de 3 colunas para fechar as 6 caixas perfeitamente */}
-      <div className="bg-foreground/10 border-foreground/10 grid grid-cols-1 gap-px border md:grid-cols-2 lg:grid-cols-3">
+      {/* Grid com espaçamento sutil entre as caixas separadas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {steps.map((item, i) => (
           <Card
             key={i}
-            className="bg-background hover:bg-muted/30 flex h-full flex-col rounded-none border-none p-8 shadow-none transition-colors"
+            asChild
+            /* asChild operando perfeitamente agora com o type customizado do ElementType */
+            className="group bg-background hover:bg-muted/30 border-foreground/10 flex h-full flex-col rounded-none border p-8 shadow-none ring-0 ring-offset-0 transition-colors outline-none"
           >
-            <CardHeader className="p-0">
-              <span className="text-muted-foreground/40 text-xs font-bold tracking-[0.2em] uppercase">
-                Etapa 0{i + 1}
-              </span>
-              <CardTitle className="mt-3 text-xl font-bold tracking-tight md:text-2xl">
-                {item.title}
-              </CardTitle>
-            </CardHeader>
+            <div>
+              <CardHeader className="p-0">
+                <span className="text-muted-foreground/40 text-xs font-bold tracking-[0.2em] uppercase">
+                  Etapa 0{i + 1}
+                </span>
+                <CardTitle className="mt-3 text-xl font-bold tracking-tight md:text-2xl">
+                  {item.title}
+                </CardTitle>
+              </CardHeader>
 
-            <CardContent className="mt-6 p-0">
-              {/* Aumentado o texto para text-base e leading-relaxed para melhor leitura */}
-              <p className="text-muted-foreground text-base leading-relaxed md:text-lg">
-                {item.desc}
-              </p>
-            </CardContent>
+              <CardContent className="mt-6 p-0">
+                <p className="text-muted-foreground text-base leading-relaxed md:text-lg">
+                  {item.desc}
+                </p>
+              </CardContent>
+            </div>
           </Card>
         ))}
       </div>

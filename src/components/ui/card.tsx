@@ -1,14 +1,21 @@
 import * as React from "react"
-
+import { Slot } from "@radix-ui/react-slot"
 import { cn } from "@/lib/utils"
 
 function Card({
   className,
   size = "default",
+  asChild = false,
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+}: React.ComponentProps<"div"> & {
+  size?: "default" | "sm"
+  asChild?: boolean
+}) {
+  // CORREÇÃO: Tipando explicitamente como React.ElementType para o TS aceitar o JSX <Component ... />
+  const Component: React.ElementType = asChild ? Slot : "div"
+
   return (
-    <div
+    <Component
       data-slot="card"
       data-size={size}
       className={cn(
