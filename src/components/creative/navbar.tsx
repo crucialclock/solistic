@@ -47,11 +47,25 @@ const NavLinksList = ({ mobile = false }: NavLinksListProps) => {
   )
 }
 
+// Função utilitária rápida e segura para extrair privilégios sem gerar requisições de rede
+function checkIsAdmin(token: string | null): boolean {
+  if (!token) return false
+  try {
+    const payload = token.split(".")[1]
+    const decoded = JSON.parse(atob(payload))
+    return decoded.role === "ADMIN"
+  } catch {
+    return false
+  }
+}
+
 export function Navbar() {
   // Força a atualização a cada troca de rota para reler o localStorage
   useLocation()
 
-  const isAuthenticated = !!localStorage.getItem("token")
+  const token = localStorage.getItem("token")
+  const isAuthenticated = !!token
+  const isAdmin = checkIsAdmin(token)
 
   return (
     <header className="border-foreground/10 bg-background flex w-full justify-center">
@@ -77,6 +91,20 @@ export function Navbar() {
               <span className="absolute -bottom-1 left-0 h-px w-full scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100" />
             </Link>
           </Button>
+
+          {/* LINK EXCLUSIVO DE ADMIN: Renderizado em background apenas se descriptografar o privilégio */}
+          {isAdmin && (
+            <Button
+              variant="ghost"
+              asChild
+              className="group relative h-9 cursor-pointer rounded-none px-0 text-xs font-bold tracking-widest text-amber-500 uppercase transition-all hover:bg-transparent hover:text-amber-600"
+            >
+              <Link to="/admin">
+                Painel Admin
+                <span className="absolute -bottom-1 left-0 h-px w-full scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100" />
+              </Link>
+            </Button>
+          )}
         </div>
 
         {/* MOBILE NAV */}
@@ -100,6 +128,16 @@ export function Navbar() {
               <div className="mt-8 flex flex-col gap-8">
                 <nav className="flex flex-col gap-5">
                   <NavLinksList mobile />
+
+                  {/* Link interno do Admin renderizado condicionalmente no menu mobile */}
+                  {isAdmin && (
+                    <Link
+                      to="/admin"
+                      className="text-xs font-bold tracking-[0.2em] text-amber-500 uppercase transition-opacity hover:opacity-80"
+                    >
+                      Painel Admin
+                    </Link>
+                  )}
 
                   {/* Link de autenticação no menu mobile */}
                   <Link

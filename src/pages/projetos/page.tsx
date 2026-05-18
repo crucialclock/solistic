@@ -37,13 +37,13 @@ export function Projetos() {
         transition={baseTransition}
         className="space-y-10 text-left"
       >
-        {/* CABEÇALHO PADRONIZADO */}
+        {/* Cabeçalho */}
         <PageHeader
           title="Projetos"
           subtitle="Portfólio interno e soluções modulares em desenvolvimento."
         />
 
-        {/* GRID BRUTALISTA DE PROJETOS MOCKUP */}
+        {/* Grid com uns projetos de mentira por enquanto */}
         <div className="bg-foreground/10 border-foreground/10 grid grid-cols-1 gap-px border sm:grid-cols-2 lg:grid-cols-3">
           {MOCK_PROJECTS.map((proj, idx) => (
             <div

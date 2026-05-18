@@ -12,7 +12,7 @@ export const CheckboxField = forwardRef<HTMLInputElement, CheckboxFieldProps>(
     return (
       <label
         htmlFor={inputId}
-        className="border-foreground/10 hover:bg-foreground/5 flex h-14 w-full cursor-pointer items-center gap-3 rounded-none border bg-transparent px-4 text-base transition-colors"
+        className="border-foreground/10 hover:bg-foreground/5 flex h-14 w-full cursor-pointer items-center gap-3 rounded-none border bg-transparent px-4 text-base transition-colors hover:border-2"
       >
         <input
           id={inputId}

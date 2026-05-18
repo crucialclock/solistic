@@ -4,28 +4,25 @@
 @import "@fontsource-variable/geist";
 
 :root {
-  --background: #d8dfe3;
+  --background: #fdfdfd;
   --foreground: #1a1a1a;
-  --grid-opacity: 0.1;
+  --grid-opacity: 0.05;
 }
 
 .dark {
   --background: #0d0d0d;
   --foreground: #d7d0d0;
-  /* No escuro, 0.03 é quase invisível. 0.05 ajuda a aparecer sem perder a sutileza. */
-  --grid-opacity: 0.1;
+  --grid-opacity: 0.05;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
 
-  /* Transição suave */
   transition:
     background-color 0.45s ease,
     color 0.45s ease;
 
-  /* Suaviza as fontes para melhorar a leitura nessas cores */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

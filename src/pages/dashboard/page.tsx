@@ -1,29 +1,32 @@
-import { Link, useNavigate } from "react-router-dom"
 import { motion, type Transition } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card"
 import { useDashboard } from "./useDashboard"
-import { FormField } from "@/components/creative/form-field"
+import { Button } from "@/components/ui/button"
+import { StatusFilter } from "@/components/creative/status-filter"
+import { QuoteCard } from "@/components/creative/quote-card"
+import { EmptyState } from "@/components/creative/empty-state"
+import { PaginationControl } from "@/components/creative/pagination-control"
+import { PageHeader } from "@/components/creative/page-header"
+
+// Opções estáticas de filtros declaradas fora do componente para não sobrecarregar a renderização
+const FILTER_OPTIONS = [
+  { key: "ALL", label: "Todos" },
+  { key: "PENDING", label: "Pendentes" },
+  { key: "IN_PROGRESS", label: "Em Andamento" },
+  { key: "DONE", label: "Concluídos" },
+]
 
 export function Dashboard() {
-  const navigate = useNavigate()
   const {
     user,
     quotes,
+    statusFilter,
+    setStatusFilter,
+    setPage,
+    paginationMeta,
     loading,
     error,
-    isSaving,
-    errors,
-    register,
     handleLogout,
     getStatusStyle,
-    onSaveProfile,
   } = useDashboard()
 
   const baseTransition: Transition = {
@@ -31,154 +34,114 @@ export function Dashboard() {
     ease: [0.22, 1, 0.36, 1],
   }
 
+  // Descobre a saudação estritamente em tempo de execução
+  const currentHour = new Date().getHours()
+  const timeOfDay =
+    currentHour >= 5 && currentHour < 12
+      ? "Bom dia"
+      : currentHour >= 12 && currentHour < 17
+        ? "Boa tarde"
+        : "Boa noite"
+
+  if (loading && !user) {
+    return (
+      <div className="text-muted-foreground mx-auto max-w-4xl animate-pulse px-4 py-12 text-center font-mono text-sm font-medium tracking-widest uppercase sm:px-6">
+        Carregando painel de controle...
+      </div>
+    )
+  }
+
   return (
-    <div className="flex min-h-[75vh] w-full items-center justify-center px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={baseTransition}
-        className="w-full max-w-4xl"
+        className="space-y-10 text-left"
       >
-        <Card className="rounded-none border-none bg-transparent p-0 shadow-none ring-0">
-          <CardHeader className="space-y-2 p-0">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-left">
-                <CardTitle className="text-3xl font-bold tracking-tighter uppercase md:text-4xl">
-                  Painel de Controle
-                </CardTitle>
-                <CardDescription className="text-muted-foreground text-sm">
-                  Ambiente restrito — Gerenciamento e histórico de solicitações.
-                </CardDescription>
-              </div>
+        {/* Cabeçalho */}
+        <PageHeader title="Dashboard" subtitle={`${timeOfDay}, ${user?.name}!`}>
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            className="group relative h-9 w-fit cursor-pointer rounded-none px-0 text-xs font-bold tracking-widest text-red-500 uppercase transition-all hover:bg-transparent hover:text-red-600 focus-visible:ring-0"
+          >
+            <span className="relative">
+              Sair da Conta &rarr;
+              <span className="absolute -bottom-1 left-0 h-px w-full scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100" />
+            </span>
+          </Button>
+        </PageHeader>
 
-              <Button
-                onClick={handleLogout}
-                className="border-foreground text-foreground hover:bg-foreground hover:text-background h-10 w-full rounded-none border-2 bg-transparent px-6 text-xs font-bold tracking-widest uppercase transition-all duration-300 sm:w-auto"
-              >
-                Sair
-              </Button>
+        <div className="group relative inline-block cursor-pointer">
+          <span className="text-sm font-bold tracking-widest uppercase">
+            Meu Texto
+          </span>
+
+          <span className="absolute -bottom-1 left-0 h-px w-full scale-x-0 bg-current transition-transform duration-300 ease-out group-hover:scale-x-100" />
+        </div>
+
+        {error && (
+          <div className="rounded-none border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-semibold text-red-500">
+            {error}
+          </div>
+        )}
+
+        {/* Lista de solicitações de orçamento */}
+        <div className="space-y-4">
+          <StatusFilter
+            options={FILTER_OPTIONS}
+            value={statusFilter}
+            onChange={setStatusFilter}
+          />
+
+          {quotes.length === 0 ? (
+            <EmptyState message="Nenhum orçamento encontrado nesta categoria." />
+          ) : (
+            <div className="space-y-3">
+              {quotes.map((quote) => (
+                <QuoteCard
+                  key={quote.id}
+                  quote={quote}
+                  getStatusStyle={getStatusStyle}
+                />
+              ))}
             </div>
-          </CardHeader>
+          )}
 
-          <CardContent className="mt-12 flex flex-col gap-12 p-0">
-            {loading && (
-              <div className="text-muted-foreground py-8 text-center text-base font-medium">
-                Sincronizando dados com o servidor...
-              </div>
-            )}
+          <PaginationControl meta={paginationMeta} onPageChange={setPage} />
+        </div>
 
-            {error && (
-              <div className="flex flex-col gap-4">
-                <div className="rounded-none bg-red-500/10 px-4 py-3 text-center text-sm font-semibold text-red-500">
-                  {error}
-                </div>
-                <Button
-                  onClick={() => navigate("/login")}
-                  className="border-foreground bg-foreground text-background hover:bg-background hover:text-foreground h-14 rounded-none border-2 font-bold tracking-[0.2em] uppercase transition-all duration-300"
-                >
-                  Voltar para o Login
-                </Button>
-              </div>
-            )}
+        {/* Informações da conta, depois talvez eu faça um componente dedicado e implemente o botão de alterar senha aqui */}
+        <div className="border-foreground/10 bg-foreground/[0.01] flex flex-col gap-6 rounded-none border p-6 font-mono text-xs sm:flex-row sm:items-center sm:justify-between">
+          <div className="grid grid-cols-1 gap-4 text-left sm:grid-cols-2 sm:gap-12">
+            <div className="space-y-0.5">
+              <span className="text-muted-foreground/60 block font-bold tracking-widest uppercase select-none">
+                Nome Completo
+              </span>
+              <p className="text-foreground font-sans text-sm font-bold tracking-tight">
+                {user?.name}
+              </p>
+            </div>
 
-            {user && !loading && !error && (
-              <>
-                {/* BLOCO 1: FORMULÁRIO DE DADOS (USANDO COMPONENTE FORMFIELD REUTILIZÁVEL) */}
-                <form onSubmit={onSaveProfile} className="flex flex-col gap-6">
-                  <div className="flex flex-col gap-5 text-left">
-                    <h3 className="text-muted-foreground/60 text-xs font-bold tracking-widest uppercase">
-                      Dados Cadastrais (Editável)
-                    </h3>
+            <div className="space-y-0.5">
+              <span className="text-muted-foreground/60 block font-bold tracking-widest uppercase select-none">
+                E-mail de Contato
+              </span>
+              <p className="text-foreground font-medium break-all">
+                {user?.email}
+              </p>
+            </div>
+          </div>
 
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                      <FormField
-                        label="Nome"
-                        type="text"
-                        error={errors.name?.message}
-                        {...register("name")}
-                      />
-
-                      <FormField
-                        label="E-mail"
-                        type="email"
-                        error={errors.email?.message}
-                        {...register("email")}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-muted-foreground max-w-sm text-left text-xs leading-relaxed">
-                      Sua conexão está validada. Alterações salvas refletem no
-                      payload interno.
-                    </p>
-                    <Button
-                      type="submit"
-                      disabled={isSaving}
-                      className="border-foreground bg-foreground text-background hover:bg-background hover:text-foreground h-14 w-full rounded-none border-2 px-8 font-bold tracking-[0.2em] uppercase transition-all duration-300 sm:w-auto"
-                    >
-                      {isSaving ? "Salvando..." : "Salvar Alterações"}
-                    </Button>
-                  </div>
-                </form>
-
-                {/* BLOCO 2: LISTAGEM DE SOLICITAÇÕES (QUOTES) */}
-                <div className="mt-4 flex flex-col gap-5 text-left">
-                  <div className="border-foreground/5 flex items-center justify-between border-b pb-4">
-                    <h3 className="text-muted-foreground/60 text-xs font-bold tracking-widest uppercase">
-                      Meus Orçamentos Enviados
-                    </h3>
-                    <Link
-                      to="/orcamento"
-                      className="text-foreground text-xs font-bold tracking-wider uppercase underline underline-offset-4 hover:opacity-80"
-                    >
-                      + Nova Solicitação
-                    </Link>
-                  </div>
-
-                  {quotes.length === 0 ? (
-                    <div className="border-foreground/10 bg-foreground/[0.01] rounded-none border border-dashed py-12 text-center">
-                      <p className="text-muted-foreground text-sm">
-                        Você ainda não enviou nenhuma proposta de projeto.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="bg-foreground/10 border-foreground/10 flex flex-col gap-px border">
-                      {quotes.map((quote) => (
-                        <div
-                          key={quote.id}
-                          className="bg-background hover:bg-muted/10 flex flex-col gap-3 p-5 transition-colors sm:flex-row sm:items-center sm:justify-between"
-                        >
-                          <div className="flex flex-col gap-1">
-                            <span className="text-foreground text-base font-bold tracking-tight">
-                              {quote.project_name}
-                            </span>
-                            <span className="text-muted-foreground text-xs font-medium">
-                              {quote.service_type} •{" "}
-                              {new Date(quote.created_at).toLocaleDateString(
-                                "pt-BR"
-                              )}
-                            </span>
-                          </div>
-
-                          <div className="flex items-center justify-between gap-4 sm:justify-end">
-                            <span
-                              className={`rounded-none px-3 py-1 text-xs font-black tracking-widest uppercase ${getStatusStyle(
-                                quote.status
-                              )}`}
-                            >
-                              {quote.status}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
+          <Button
+            type="button"
+            disabled
+            className="border-foreground/20 text-muted-foreground/50 h-10 w-full cursor-not-allowed rounded-none border border-dashed bg-transparent px-4 font-bold tracking-widest uppercase opacity-40 select-none sm:w-fit"
+          >
+            Conta Ativa
+          </Button>
+        </div>
       </motion.div>
     </div>
   )

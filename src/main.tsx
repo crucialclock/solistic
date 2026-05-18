@@ -10,8 +10,11 @@ import { AuthGuard } from "./components/auth-guard.tsx"
 import Login from "./pages/login/page.tsx"
 import Registro from "./pages/registro/page.tsx"
 import App from "./App.tsx"
-import { Dashboard } from "./pages/dashboard/page.tsx"
 import { Orcamento } from "./pages/orcamento/page.tsx"
+import { QuoteDetails } from "./pages/detalhes-orcamento/QuoteDetails.tsx"
+import { Dashboard } from "./pages/dashboard/page.tsx"
+import { AdminDashboard } from "./pages/admin/page.tsx"
+// 1. Importe a sua nova página de administração aqui
 
 // Configuração das rotas completas
 const router = createBrowserRouter([
@@ -36,17 +39,25 @@ const router = createBrowserRouter([
         element: <Orcamento />,
       },
       {
+        path: "/orcamento/:id",
+        element: <QuoteDetails />,
+      },
+      {
         path: "/projetos",
         element: <Projetos />,
       },
 
-      // Exemplo de escopo protegido usando a Http Guard no React
+      // Escopo protegido usando o AuthGuard
       {
         element: <AuthGuard />,
         children: [
           {
             path: "/dashboard",
-            element: <Dashboard />, // Agora sim chama o componente real
+            element: <Dashboard />,
+          },
+          {
+            path: "/admin",
+            element: <AdminDashboard />,
           },
         ],
       },
