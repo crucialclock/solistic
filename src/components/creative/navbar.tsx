@@ -8,7 +8,7 @@ import { Link, useLocation } from "react-router-dom"
 // Links institucionais padrão
 const MENU_ITEMS = [
   { label: "Início", to: "/" },
-  { label: "Projetos", to: "/projetos" },
+  { label: "Serviços Oferecidos", to: "/servicos" },
   { label: "Orçamento", to: "/orcamento" },
 ]
 

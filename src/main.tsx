@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 import "./index.css"
 import { ThemeProvider } from "@/components/theme-provider.tsx"
-import { Projetos } from "./pages/projetos/page.tsx"
+import { Servicos } from "./pages/servicos/page.tsx"
 import { RootLayout } from "./components/layout.tsx"
 import { AuthGuard } from "./components/auth-guard.tsx"
 import Login from "./pages/login/page.tsx"
@@ -42,10 +42,7 @@ const router = createBrowserRouter([
         path: "/orcamento/:id",
         element: <QuoteDetails />,
       },
-      {
-        path: "/projetos",
-        element: <Projetos />,
-      },
+      { path: "/servicos", element: <Servicos /> },
 
       // Escopo protegido usando o AuthGuard
       {
